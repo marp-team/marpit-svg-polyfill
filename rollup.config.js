@@ -18,7 +18,12 @@ export default [
   {
     external: [...Object.keys(pkg.dependencies || {})],
     input: `src/${path.basename(pkg.main, '.js')}.ts`,
-    output: { file: pkg.main, format: 'umd', name: 'marpitSvgWebkitPolyfill' },
+    output: {
+      file: pkg.main,
+      format: 'umd',
+      name: 'marpitSvgWebkitPolyfill',
+      exports: 'named',
+    },
     plugins,
   },
 ]
