@@ -1,13 +1,19 @@
-# @marp-team/marpit-inline-svg-polyfill
+# @marp-team/marpit-svg-webkit-polyfill
 
-[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-inline-svg-polyfill/master.svg?style=flat-square)](https://circleci.com/gh/marp-team/marpit-inline-svg-polyfill/)
-[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-inline-svg-polyfill/master.svg?style=flat-square)](https://codecov.io/gh/marp-team/marpit-inline-svg-polyfill)
-[![npm](https://img.shields.io/npm/v/@marp-team/marpit-inline-svg-polyfill.svg?style=flat-square)](https://www.npmjs.com/package/@marp-team/marpit-inline-svg-polyfill)
-[![LICENSE](https://img.shields.io/github/license/marp-team/marpit-inline-svg-polyfill.svg?style=flat-square)](./LICENSE)
+[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-svg-webkit-polyfill/master.svg?style=flat-square)](https://circleci.com/gh/marp-team/marpit-svg-webkit-polyfill/)
+[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-svg-webkit-polyfill/master.svg?style=flat-square)](https://codecov.io/gh/marp-team/marpit-svg-webkit-polyfill)
+[![npm](https://img.shields.io/npm/v/@marp-team/marpit-svg-webkit-polyfill.svg?style=flat-square)](https://www.npmjs.com/package/@marp-team/marpit-svg-webkit-polyfill)
+[![LICENSE](https://img.shields.io/github/license/marp-team/marpit-svg-webkit-polyfill.svg?style=flat-square)](./LICENSE)
+
+WebKit polyfill for inline SVG slides rendered by Marpit.
+
+## Usage
+
+Under construction.
 
 ## Contributing
 
-Are you interested in contributing? Please see [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+We are following [the contributing guideline of marp-team projects](https://github.com/marp-team/marp/blob/master/.github/CONTRIBUTING.md). Please read these guidelines this before starting work in this repository.
 
 ## Author
 
