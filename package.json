@@ -1,6 +1,6 @@
 {
   "name": "@marp-team/marpit-svg-webkit-polyfill",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "WebKit polyfill for inline SVG slides rendered by Marpit",
   "license": "MIT",
   "author": {
@@ -24,7 +24,7 @@
     "types/"
   ],
   "engines": {
-    "node": ">=6.14.4"
+    "node": ">=6.14.2"
   },
   "jest": {
     "collectCoverageFrom": [
