@@ -2,11 +2,7 @@ import { Marpit } from '@marp-team/marpit'
 import detectBrowser from 'detect-browser'
 import { observe, symbolObserver, webkit } from '../src/polyfill'
 
-beforeEach(() => {
-  jest.resetModules()
-  delete window[symbolObserver]
-})
-
+beforeEach(() => (window[symbolObserver] = false))
 afterEach(() => jest.restoreAllMocks())
 
 describe('Marpit SVG polyfill', () => {
