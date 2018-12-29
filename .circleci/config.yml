@@ -1,6 +1,6 @@
 references:
   base: &base
-    working_directory: ~/marpit-svg-webkit-polyfill
+    working_directory: ~/marpit-svg-polyfill
     steps:
       # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#upgradingdowngrading-yarn
       - run:

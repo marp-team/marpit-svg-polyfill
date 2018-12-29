@@ -1,7 +1,7 @@
 {
-  "name": "@marp-team/marpit-svg-webkit-polyfill",
+  "name": "@marp-team/marpit-svg-polyfill",
   "version": "0.0.0",
-  "description": "WebKit polyfill for inline SVG slides rendered by Marpit",
+  "description": "Polyfill for inline SVG slides rendered by Marpit",
   "license": "MIT",
   "author": {
     "name": "Marp team",
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/marp-team/marpit-svg-webkit-polyfill"
+    "url": "https://github.com/marp-team/marpit-svg-polyfill"
   },
   "main": "lib/polyfill.js",
   "module": "lib/polyfill.mjs",

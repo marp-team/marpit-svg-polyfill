@@ -24,13 +24,13 @@ export function observe() {
   window[symbolObserver] = true
 
   const observer = () => {
-    polyfill()
+    webkit()
     window.requestAnimationFrame(observer)
   }
   observer()
 }
 
-export function polyfill() {
+export function webkit() {
   Array.from(document.getElementsByTagName('svg'), svg => {
     if (svg.hasAttribute('data-marpit-svg')) {
       const { clientHeight, clientWidth } = svg
