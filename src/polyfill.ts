@@ -1,1 +1,5 @@
-export default function() {}
+export function polyfill() {
+  // TODO: Implement polyfill
+}
+
+export default polyfill
