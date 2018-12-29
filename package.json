@@ -18,6 +18,7 @@
     "url": "https://github.com/marp-team/marpit-svg-webkit-polyfill"
   },
   "main": "lib/polyfill.js",
+  "module": "lib/polyfill.mjs",
   "types": "types/polyfill.d.ts",
   "files": [
     "lib/",
