@@ -1,5 +1,7 @@
 import { detect } from 'detect-browser'
 
+let memoizedPolyfills: (() => void)[] | undefined
+
 const webkitBrowsers = [
   'android',
   'bb10',
@@ -19,18 +21,29 @@ export function observe() {
   if (window[symbolObserver]) return
   window[symbolObserver] = true
 
-  const { name } = detect() || <any>{}
-  const polyfills: (() => void)[] = []
-
-  if (webkitBrowsers.includes(name)) polyfills.push(webkit)
-  if (polyfills.length === 0) return
+  if (polyfills().length === 0) return
 
   const observer = () => {
-    for (const polyfill of polyfills) polyfill()
+    for (const polyfill of polyfills()) polyfill()
     window.requestAnimationFrame(observer)
   }
 
   observer()
+}
+
+export function polyfills() {
+  if (!memoizedPolyfills) {
+    memoizedPolyfills = []
+
+    const { name } = detect() || <any>{}
+    if (webkitBrowsers.includes(name)) memoizedPolyfills.push(webkit)
+  }
+  return memoizedPolyfills
+}
+
+export function resetPolyfills() {
+  // Reset memoized polyfills for test
+  memoizedPolyfills = undefined
 }
 
 export function webkit() {
