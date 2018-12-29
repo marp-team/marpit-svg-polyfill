@@ -1,7 +1,5 @@
 import { detect } from 'detect-browser'
 
-const symbolObserver = Symbol('MarpitSVGWebkitPolyfillObserver')
-
 const webkitBrowsers = [
   'android',
   'bb10',
@@ -15,18 +13,23 @@ const webkitBrowsers = [
   'safari',
 ]
 
+export const symbolObserver = Symbol('MarpitSVGWebkitPolyfillObserver')
+
 export function observe() {
   if (window[symbolObserver]) return
-
-  const { name } = detect()
-  if (!webkitBrowsers.includes(name)) return
-
   window[symbolObserver] = true
 
+  const { name } = detect() || <any>{}
+  const polyfills: (() => void)[] = []
+
+  if (webkitBrowsers.includes(name)) polyfills.push(webkit)
+  if (polyfills.length === 0) return
+
   const observer = () => {
-    webkit()
+    for (const polyfill of polyfills) polyfill()
     window.requestAnimationFrame(observer)
   }
+
   observer()
 }
 
@@ -54,5 +57,3 @@ export function webkit() {
     }
   })
 }
-
-export default observe

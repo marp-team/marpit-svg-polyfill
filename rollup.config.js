@@ -1,13 +1,9 @@
-import path from 'path'
 import commonjs from 'rollup-plugin-commonjs'
 import json from 'rollup-plugin-json'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript'
-import pkg from './package.json'
-
-const basename = path.basename(pkg.main, '.js')
-const outputDir = path.dirname(pkg.main)
+import { main, module as moduleFile, dependencies } from './package.json'
 
 const plugins = [
   json({ preferConst: true }),
@@ -20,28 +16,18 @@ const plugins = [
 export default [
   {
     plugins,
-    external: Object.keys(pkg.dependencies),
-    input: `src/${basename}.ts`,
-    output: {
-      file: `${outputDir}/${basename}.js`,
-      format: 'cjs',
-      exports: 'named',
-    },
+    external: Object.keys(dependencies),
+    input: `src/entry.ts`,
+    output: { file: main, format: 'cjs', exports: 'named' },
   },
   {
     plugins,
-    input: `src/${basename}.ts`,
-    output: {
-      file: `${outputDir}/${basename}.mjs`,
-      format: 'esm',
-    },
+    input: `src/entry.ts`,
+    output: { file: moduleFile, format: 'esm' },
   },
   {
     plugins,
-    input: `src/${basename}.browser.ts`,
-    output: {
-      file: `${outputDir}/${basename}.browser.js`,
-      format: 'iife',
-    },
+    input: `src/polyfill.browser.ts`,
+    output: { file: main.replace(/\.[^\.]+$/, '.browser.js'), format: 'iife' },
   },
 ]

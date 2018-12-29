@@ -1,3 +1,3 @@
-import polyfill from './polyfill'
+import { observe } from './polyfill'
 
-polyfill()
+observe()

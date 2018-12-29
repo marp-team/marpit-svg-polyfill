@@ -19,7 +19,7 @@
   },
   "main": "lib/polyfill.js",
   "module": "lib/polyfill.mjs",
-  "types": "types/polyfill.d.ts",
+  "types": "types/entry.d.ts",
   "files": [
     "lib/",
     "types/"
@@ -40,7 +40,10 @@
         "lines": 95
       }
     },
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "testMatch": [
+      "<rootDir>/test/**/*.[jt]s"
+    ]
   },
   "scripts": {
     "build": "yarn --silent clean && rollup -c",
@@ -60,6 +63,7 @@
     "watch": "rollup -w -c"
   },
   "devDependencies": {
+    "@marp-team/marpit": "^0.5.0",
     "@types/jest": "^23.3.10",
     "codecov": "^3.1.0",
     "jest": "^23.6.0",
