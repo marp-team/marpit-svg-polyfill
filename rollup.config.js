@@ -9,8 +9,6 @@ import pkg from './package.json'
 const basename = path.basename(pkg.main, '.js')
 const outputDir = path.dirname(pkg.main)
 
-const external = [...Object.keys(pkg.dependencies || {})]
-
 const plugins = [
   json({ preferConst: true }),
   nodeResolve({ jsnext: true }),
@@ -21,8 +19,8 @@ const plugins = [
 
 export default [
   {
-    external,
     plugins,
+    external: Object.keys(pkg.dependencies),
     input: `src/${basename}.ts`,
     output: {
       file: `${outputDir}/${basename}.js`,
@@ -31,7 +29,6 @@ export default [
     },
   },
   {
-    external,
     plugins,
     input: `src/${basename}.ts`,
     output: {
@@ -40,7 +37,6 @@ export default [
     },
   },
   {
-    external,
     plugins,
     input: `src/${basename}.browser.ts`,
     output: {
