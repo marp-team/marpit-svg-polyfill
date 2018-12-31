@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v0.2.0 - 2018-12-31
+
 - Fix incorrect scaling in split background ([#2](https://github.com/marp-team/marpit-svg-polyfill/pull/2))
 
 ## v0.1.0 - 2018-12-29
