@@ -52,21 +52,30 @@ export function webkit() {
       const { clientHeight, clientWidth } = svg
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
 
-      Array.from(svg.getElementsByTagName('foreignObject'), foreignObject => {
-        const foWidth = foreignObject.clientWidth
-        const foHeight = foreignObject.clientHeight
-        const scale = Math.min(clientHeight / foHeight, clientWidth / foWidth)
+      const { width, height } = svg.viewBox.baseVal
+      const scale = Math.min(clientHeight / height, clientWidth / width)
 
-        Array.from(foreignObject.getElementsByTagName('section'), section => {
-          if (!section.style.transformOrigin) {
-            section.style.transformOrigin = '0 0'
-          }
+      Array.from(
+        svg.querySelectorAll<SVGForeignObjectElement>(':scope > foreignObject'),
+        foreignObject => {
+          const x = foreignObject.x.baseVal.value
+          const y = foreignObject.y.baseVal.value
 
-          section.style.transform = `translate3d(${clientWidth / 2 -
-            (scale * foWidth) / 2}px,${clientHeight / 2 -
-            (scale * foHeight) / 2}px,0) scale(${scale})`
-        })
-      })
+          Array.from(
+            foreignObject.querySelectorAll<HTMLElement>(':scope > section'),
+            section => {
+              if (!section.style.transformOrigin) {
+                section.style.transformOrigin = '0 0'
+              }
+
+              const tx = (clientWidth - scale * width) / 2 - x
+              const ty = (clientHeight - scale * height) / 2 - y
+
+              section.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${scale}) translate(${x}px,${y}px)`
+            }
+          )
+        }
+      )
     }
   })
 }
