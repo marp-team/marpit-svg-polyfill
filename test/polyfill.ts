@@ -43,6 +43,30 @@ describe('Marpit SVG polyfill', () => {
     beforeEach(() => {
       const marpit = new Marpit({ inlineSVG: true })
       document.body.innerHTML = marpit.render('').html
+
+      Array.from(document.querySelectorAll('svg'), (svg: any) => {
+        svg.viewBox = { baseVal: { width: 1280, height: 720 } }
+
+        const foreignObjects = Array.from(
+          svg.querySelectorAll('foreignObject'),
+          (foreignObject: any) => {
+            foreignObject.x = { baseVal: { value: 0 } }
+            foreignObject.y = { baseVal: { value: 0 } }
+
+            // mock for unsupported `:scope` selector
+            jest
+              .spyOn(foreignObject, 'querySelectorAll')
+              .mockImplementation(() => document.querySelectorAll('section'))
+
+            return foreignObject
+          }
+        )
+
+        // mock for unsupported `:scope` selector
+        jest
+          .spyOn(svg, 'querySelectorAll')
+          .mockImplementation(() => foreignObjects)
+      })
     })
 
     it('applies transform style to SVG element for repainting', () => {
