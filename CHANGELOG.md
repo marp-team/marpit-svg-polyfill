@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v0.3.0 - 2019-03-20
+
 ### Fixed
 
 - Incorrect scaling with custom zoom level ([#3](https://github.com/marp-team/marpit-svg-polyfill/issues/3), [#4](https://github.com/marp-team/marpit-svg-polyfill/pull/4))
