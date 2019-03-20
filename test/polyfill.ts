@@ -1,5 +1,5 @@
 import { Marpit } from '@marp-team/marpit'
-import detectBrowser from 'detect-browser'
+import * as detectBrowser from 'detect-browser'
 import {
   observe,
   resetPolyfills,
@@ -15,8 +15,10 @@ beforeEach(() => {
 afterEach(() => jest.restoreAllMocks())
 
 describe('Marpit SVG polyfill', () => {
-  const browseWith = name =>
-    jest.spyOn(detectBrowser, 'detect').mockImplementation(() => ({ name }))
+  const browseWith = (name: detectBrowser.BrowserInfo['name']) =>
+    jest
+      .spyOn(detectBrowser, 'detect')
+      .mockImplementation(() => ({ name, version: '0.0.0', os: null }))
 
   describe('#observe', () => {
     it('has no operations when running in not supported browser', () => {
@@ -83,7 +85,7 @@ describe('Marpit SVG polyfill', () => {
       Array.from(sections, section => {
         const { transform, transformOrigin } = section.style
 
-        expect(transformOrigin).toBeUndefined()
+        expect(transformOrigin).toBeFalsy()
         expect(transform).not.toContain('translate3d')
         expect(transform).not.toContain('scale')
       })
