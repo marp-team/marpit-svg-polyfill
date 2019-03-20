@@ -1,8 +1,8 @@
 # @marp-team/marpit-svg-polyfill
 
-[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square)](https://circleci.com/gh/marp-team/marpit-svg-polyfill/)
-[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square)](https://codecov.io/gh/marp-team/marpit-svg-polyfill)
-[![npm](https://img.shields.io/npm/v/@marp-team/marpit-svg-polyfill.svg?style=flat-square)](https://www.npmjs.com/package/@marp-team/marpit-svg-polyfill)
+[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square&logo=circleci)](https://circleci.com/gh/marp-team/marpit-svg-polyfill/)
+[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square&logo=codecov)](https://codecov.io/gh/marp-team/marpit-svg-polyfill)
+[![npm](https://img.shields.io/npm/v/@marp-team/marpit-svg-polyfill.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/@marp-team/marpit-svg-polyfill)
 [![LICENSE](https://img.shields.io/github/license/marp-team/marpit-svg-polyfill.svg?style=flat-square)](./LICENSE)
 
 The polyfill for [the inline SVG slide][inline-svg] rendered by [Marpit].
