@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Incorrect scaling with custom zoom level ([#3](https://github.com/marp-team/marpit-svg-polyfill/issues/3), [#4](https://github.com/marp-team/marpit-svg-polyfill/pull/4))
+
 ### Changed
 
 - Upgrade dependent packages to the latest ([#5](https://github.com/marp-team/marpit-svg-polyfill/pull/5))

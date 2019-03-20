@@ -1,6 +1,6 @@
 import { detect } from 'detect-browser'
 
-let memoizedPolyfills: (() => void)[] | undefined
+let memoizedPolyfills: ((...args: any[]) => void)[] | undefined
 
 const webkitBrowsers = [
   'android',
@@ -46,13 +46,19 @@ export function resetPolyfills() {
   memoizedPolyfills = undefined
 }
 
-export function webkit() {
+export function webkit(zoom?: number) {
   Array.from(document.getElementsByTagName('svg'), svg => {
     if (svg.hasAttribute('data-marpit-svg')) {
       const { clientHeight, clientWidth } = svg
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
 
-      const { width, height } = svg.viewBox.baseVal
+      // NOTE: Safari reflects a zoom level to SVG's currentScale property, but
+      // the other browsers will always return 1. You have to specify the zoom
+      // factor manually if it is used in Blink engine. (e.g. Electron)
+      const zoomFactor = zoom || svg.currentScale || 1
+
+      const width = svg.viewBox.baseVal.width / zoomFactor
+      const height = svg.viewBox.baseVal.height / zoomFactor
       const scale = Math.min(clientHeight / height, clientWidth / width)
 
       Array.from(
