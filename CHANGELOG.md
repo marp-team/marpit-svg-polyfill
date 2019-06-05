@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Breaking
+
+- Drop support of Node 6.
+
+### Changed
+
+- Upgrade dependent packages to the latest ([#7](https://github.com/marp-team/marpit-svg-polyfill/pull/7))
+
 ## v0.3.0 - 2019-03-20
 
 ### Fixed
