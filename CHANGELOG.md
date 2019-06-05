@@ -8,7 +8,8 @@
 
 ### Changed
 
-- Upgrade dependent packages to the latest ([#7](https://github.com/marp-team/marpit-svg-polyfill/pull/7))
+- Upgrade dependent packages to the latest version ([#7](https://github.com/marp-team/marpit-svg-polyfill/pull/7))
+- Automate GitHub release ([#8](https://github.com/marp-team/marpit-svg-polyfill/pull/8))
 
 ## v0.3.0 - 2019-03-20
 
