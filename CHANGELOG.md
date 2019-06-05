@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v1.0.0 - 2019-06-05
+
 ### Breaking
 
 - Drop support of Node 6.
