@@ -1,9 +1,9 @@
-export const symbolObserver = Symbol('MarpitSVGWebkitPolyfillObserver')
+export const observerSymbol = Symbol()
 
 export function observe() {
-  if (window[symbolObserver]) return
+  if (window[observerSymbol]) return
 
-  Object.defineProperty(window, symbolObserver, {
+  Object.defineProperty(window, observerSymbol, {
     configurable: true,
     value: true,
   })

@@ -1,10 +1,10 @@
 import { Marpit } from '@marp-team/marpit'
-import { observe, symbolObserver, webkit } from '../src/polyfill'
+import { observe, observerSymbol, webkit } from '../src/polyfill'
 
 let vendor: jest.SpyInstance
 
 beforeEach(() => {
-  window[symbolObserver] = false
+  window[observerSymbol] = false
   vendor = jest.spyOn(navigator, 'vendor', 'get').mockImplementation(() => '')
 })
 
