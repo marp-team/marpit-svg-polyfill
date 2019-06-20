@@ -7,7 +7,7 @@ import { main, module as moduleFile, dependencies } from './package.json'
 
 const plugins = [
   json({ preferConst: true }),
-  nodeResolve({ jsnext: true }),
+  nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'] }),
   commonjs(),
   typescript({ resolveJsonModule: false }),
   !process.env.ROLLUP_WATCH && terser(),
@@ -16,7 +16,7 @@ const plugins = [
 export default [
   {
     plugins,
-    external: Object.keys(dependencies),
+    external: Object.keys(dependencies || {}),
     input: `src/entry.ts`,
     output: { file: main, format: 'cjs', exports: 'named' },
   },

@@ -1,36 +1,28 @@
 import { Marpit } from '@marp-team/marpit'
-import * as detectBrowser from 'detect-browser'
-import {
-  observe,
-  resetPolyfills,
-  symbolObserver,
-  webkit,
-} from '../src/polyfill'
+import { observe, observerSymbol, webkit } from '../src/polyfill'
+
+let vendor: jest.SpyInstance
 
 beforeEach(() => {
-  resetPolyfills()
-  window[symbolObserver] = false
+  window[observerSymbol] = false
+  vendor = jest.spyOn(navigator, 'vendor', 'get').mockImplementation(() => '')
 })
 
-afterEach(() => jest.restoreAllMocks())
-
 describe('Marpit SVG polyfill', () => {
-  const browseWith = (name: detectBrowser.BrowserInfo['name']) =>
-    jest
-      .spyOn(detectBrowser, 'detect')
-      .mockImplementation(() => ({ name, version: '0.0.0', os: null }))
-
   describe('#observe', () => {
-    it('has no operations when running in not supported browser', () => {
-      const spy = jest.spyOn(window, 'requestAnimationFrame')
+    let spy: jest.SpyInstance
 
+    beforeEach(() => {
+      spy = jest.spyOn(window, 'requestAnimationFrame')
+    })
+
+    it('has no operations when running in not supported browser', () => {
       observe()
       expect(spy).not.toBeCalled()
     })
 
     it('applies polyfill once when running in WebKit browser', () => {
-      browseWith('safari')
-      const spy = jest.spyOn(window, 'requestAnimationFrame')
+      vendor.mockImplementation(() => 'Apple Computer, Inc.')
 
       observe()
       expect(spy).toBeCalledTimes(1)

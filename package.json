@@ -41,6 +41,7 @@
       }
     },
     "preset": "ts-jest",
+    "restoreMocks": true,
     "testMatch": [
       "<rootDir>/test/**/*.[jt]s"
     ]
@@ -65,6 +66,7 @@
   "devDependencies": {
     "@marp-team/marpit": "^1.1.0",
     "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.8",
     "codecov": "^3.5.0",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
@@ -83,9 +85,6 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.1"
-  },
-  "dependencies": {
-    "detect-browser": "^4.5.0"
   },
   "peerDependencies": {
     "@marp-team/marpit": ">=0.5.0"

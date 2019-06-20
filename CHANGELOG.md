@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Simplify WebKit detection (JS build for browser become about 5x smaller) ([#9](https://github.com/marp-team/marpit-svg-polyfill/pull/9))
+
 ## v1.0.0 - 2019-06-05
 
 ### Breaking
