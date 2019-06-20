@@ -1,50 +1,26 @@
-import { detect } from 'detect-browser'
-
-let memoizedPolyfills: ((...args: any[]) => void)[] | undefined
-
-const webkitBrowsers = [
-  'android',
-  'bb10',
-  'crios',
-  'facebook',
-  'fxios',
-  'instagram',
-  'ios-webview',
-  'ios',
-  'phantomjs',
-  'safari',
-]
-
 export const symbolObserver = Symbol('MarpitSVGWebkitPolyfillObserver')
 
 export function observe() {
   if (window[symbolObserver]) return
-  window[symbolObserver] = true
 
-  if (polyfills().length === 0) return
+  Object.defineProperty(window, symbolObserver, {
+    configurable: true,
+    value: true,
+  })
 
-  const observer = () => {
-    for (const polyfill of polyfills()) polyfill()
-    window.requestAnimationFrame(observer)
+  const observedPolyfills = polyfills()
+
+  if (observedPolyfills.length > 0) {
+    const observer = () => {
+      for (const polyfill of observedPolyfills) polyfill()
+      window.requestAnimationFrame(observer)
+    }
+    observer()
   }
-
-  observer()
 }
 
-export function polyfills() {
-  if (!memoizedPolyfills) {
-    memoizedPolyfills = []
-
-    const { name } = detect() || <any>{}
-    if (webkitBrowsers.includes(name)) memoizedPolyfills.push(webkit)
-  }
-  return memoizedPolyfills
-}
-
-export function resetPolyfills() {
-  // Reset memoized polyfills for test
-  memoizedPolyfills = undefined
-}
+export const polyfills = () =>
+  navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
 export function webkit(zoom?: number) {
   Array.from(document.getElementsByTagName('svg'), svg => {
