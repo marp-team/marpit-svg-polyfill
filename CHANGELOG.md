@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade dependent packages to the latest version ([#14](https://github.com/marp-team/marpit-svg-polyfill/pull/14))
+
+### Removed
+
+- CI test against EOL Node 8 ([#14](https://github.com/marp-team/marpit-svg-polyfill/pull/14))
+
 ## v1.1.1 - 2019-07-13
 
 ### Changed
