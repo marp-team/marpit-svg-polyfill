@@ -74,7 +74,7 @@ describe('Marpit SVG polyfill', () => {
     it('applies calculated transform style to section elements for scaling', () => {
       const sections = document.getElementsByTagName('section')
 
-      Array.from(sections, section => {
+      Array.from(sections, (section) => {
         const { transform, transformOrigin } = section.style
 
         expect(transformOrigin).toBeFalsy()
@@ -84,7 +84,7 @@ describe('Marpit SVG polyfill', () => {
 
       webkit()
 
-      Array.from(sections, section => {
+      Array.from(sections, (section) => {
         const { transform, transformOrigin } = section.style
 
         expect(transformOrigin).toBe('0 0')
