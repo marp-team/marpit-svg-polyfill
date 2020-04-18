@@ -23,7 +23,7 @@ export const polyfills = () =>
   navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
 export function webkit(zoom?: number) {
-  Array.from(document.getElementsByTagName('svg'), svg => {
+  Array.from(document.getElementsByTagName('svg'), (svg) => {
     if (svg.hasAttribute('data-marpit-svg')) {
       const { clientHeight, clientWidth } = svg
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
@@ -39,13 +39,13 @@ export function webkit(zoom?: number) {
 
       Array.from(
         svg.querySelectorAll<SVGForeignObjectElement>(':scope > foreignObject'),
-        foreignObject => {
+        (foreignObject) => {
           const x = foreignObject.x.baseVal.value
           const y = foreignObject.y.baseVal.value
 
           Array.from(
             foreignObject.querySelectorAll<HTMLElement>(':scope > section'),
-            section => {
+            (section) => {
               if (!section.style.transformOrigin) {
                 section.style.transformOrigin = '0 0'
               }
