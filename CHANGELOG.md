@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade dependent packages to the latest version ([#20](https://github.com/marp-team/marpit-svg-polyfill/pull/20))
+
 ## v1.2.1 - 2020-04-18
+
+### Changed
 
 - Upgrade dependent packages to the latest version ([#17](https://github.com/marp-team/marpit-svg-polyfill/pull/17))
 
