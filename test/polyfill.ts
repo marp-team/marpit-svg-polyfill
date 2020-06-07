@@ -78,7 +78,6 @@ describe('Marpit SVG polyfill', () => {
         const { transform, transformOrigin } = section.style
 
         expect(transformOrigin).toBeFalsy()
-        expect(transform).not.toContain('translate3d')
         expect(transform).not.toContain('scale')
       })
 
@@ -88,7 +87,6 @@ describe('Marpit SVG polyfill', () => {
         const { transform, transformOrigin } = section.style
 
         expect(transformOrigin).toBe('0 0')
-        expect(transform).toContain('translate3d')
         expect(transform).toContain('scale')
       })
     })

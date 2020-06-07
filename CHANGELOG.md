@@ -2,8 +2,13 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix visually shift depending on zoom level ([#18](https://github.com/marp-team/marpit-svg-polyfill/issues/18), [#19](https://github.com/marp-team/marpit-svg-polyfill/pull/19))
+
 ### Changed
 
+- Simplify transformation ([#19](https://github.com/marp-team/marpit-svg-polyfill/pull/19))
 - Upgrade dependent packages to the latest version ([#20](https://github.com/marp-team/marpit-svg-polyfill/pull/20))
 
 ## v1.2.1 - 2020-04-18
