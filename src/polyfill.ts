@@ -22,7 +22,11 @@ export function observe() {
 export const polyfills = () =>
   navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
+let previousZoomFactor: number | undefined = undefined
+
 export function webkit(zoom?: number) {
+  let changedZoomFactor: false | number = false
+
   Array.from(
     document.querySelectorAll<SVGSVGElement>('svg[data-marpit-svg]'),
     (svg) => {
@@ -31,8 +35,18 @@ export function webkit(zoom?: number) {
 
       // NOTE: Safari reflects a zoom level to SVG's currentScale property, but
       // the other browsers will always return 1. You have to specify the zoom
-      // factor manually if it is used in outdated Blink engine. (e.g. Electron)
-      const zoomFactor = zoom || svg.currentScale || 1
+      // factor manually if used in outdated Blink engine. (e.g. Electron)
+      const zoomFactor =
+        zoom ||
+        (window !== window.parent &&
+          window.parent['marpitSVGPolyfillZoomFactor']) ||
+        svg.currentScale ||
+        1
+
+      if (previousZoomFactor !== zoomFactor) {
+        previousZoomFactor = zoomFactor
+        changedZoomFactor = zoomFactor
+      }
 
       const width = viewBox.baseVal.width / zoomFactor
       const height = viewBox.baseVal.height / zoomFactor
@@ -48,4 +62,11 @@ export function webkit(zoom?: number) {
       }
     }
   )
+
+  if (changedZoomFactor !== false) {
+    Object.defineProperty(window, 'marpitSVGPolyfillZoomFactor', {
+      configurable: true,
+      value: changedZoomFactor,
+    })
+  }
 }
