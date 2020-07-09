@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v1.4.0 - 2020-07-09
+
 ### Fixed
 
 - Follow zoom factor of the parent window in `<iframe>` ([#21](https://github.com/marp-team/marpit-svg-polyfill/pull/21))
