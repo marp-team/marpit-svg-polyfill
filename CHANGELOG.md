@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade development Node LTS ans dependent packages to the latest version ([#22](https://github.com/marp-team/marpit-svg-polyfill/pull/22))
+
 ## v1.3.0 - 2020-06-07
 
 ### Fixed
