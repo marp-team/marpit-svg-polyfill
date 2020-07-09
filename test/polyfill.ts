@@ -39,27 +39,9 @@ describe('Marpit SVG polyfill', () => {
       document.body.innerHTML = marpit.render('').html
 
       Array.from(document.querySelectorAll('svg'), (svg: any) => {
+        jest.spyOn(svg, 'clientWidth', 'get').mockImplementation(() => 640)
+        jest.spyOn(svg, 'clientHeight', 'get').mockImplementation(() => 360)
         svg.viewBox = { baseVal: { width: 1280, height: 720 } }
-
-        const foreignObjects = Array.from(
-          svg.querySelectorAll('foreignObject'),
-          (foreignObject: any) => {
-            foreignObject.x = { baseVal: { value: 0 } }
-            foreignObject.y = { baseVal: { value: 0 } }
-
-            // mock for unsupported `:scope` selector
-            jest
-              .spyOn(foreignObject, 'querySelectorAll')
-              .mockImplementation(() => document.querySelectorAll('section'))
-
-            return foreignObject
-          }
-        )
-
-        // mock for unsupported `:scope` selector
-        jest
-          .spyOn(svg, 'querySelectorAll')
-          .mockImplementation(() => foreignObjects)
       })
     })
 
@@ -72,23 +54,49 @@ describe('Marpit SVG polyfill', () => {
     })
 
     it('applies calculated transform style to section elements for scaling', () => {
+      expect.hasAssertions()
+
       const sections = document.getElementsByTagName('section')
 
-      Array.from(sections, (section) => {
-        const { transform, transformOrigin } = section.style
-
-        expect(transformOrigin).toBeFalsy()
-        expect(transform).not.toContain('scale')
+      Array.from(sections, ({ style }) => {
+        expect(style.transformOrigin).toBeFalsy()
+        expect(style.transform).not.toContain('scale')
       })
 
       webkit()
 
-      Array.from(sections, (section) => {
-        const { transform, transformOrigin } = section.style
-
-        expect(transformOrigin).toBe('0 0')
-        expect(transform).toContain('scale')
+      Array.from(sections, ({ style }) => {
+        expect(style.transformOrigin).toBe('0 0')
+        expect(style.transform).toContain('scale(0.5)')
       })
+    })
+
+    it("takes account of SVG's currentScale property", () => {
+      expect.hasAssertions()
+
+      Array.from(document.querySelectorAll('svg'), (svg) => {
+        svg.currentScale = 1.25
+      })
+
+      webkit()
+
+      Array.from(document.getElementsByTagName('section'), ({ style }) =>
+        expect(style.transform).toContain('scale(0.625)')
+      )
+    })
+
+    it('prefers the zoom factor defined in parent.marpitSVGPolyfillZoomFactor', () => {
+      expect.hasAssertions()
+
+      jest.spyOn(window, 'parent', 'get').mockImplementation((): any => ({
+        marpitSVGPolyfillZoomFactor: 2,
+      }))
+
+      webkit()
+
+      Array.from(document.getElementsByTagName('section'), ({ style }) =>
+        expect(style.transform).toContain('scale(1)')
+      )
     })
   })
 })
