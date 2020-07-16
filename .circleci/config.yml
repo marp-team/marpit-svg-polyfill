@@ -58,8 +58,8 @@ commands:
           command: yarn check:format
 
       - run:
-          name: TSLint
-          command: yarn lint:ts
+          name: ESLint
+          command: yarn lint:js
 
       - run:
           name: TypeScript type checking

@@ -24,18 +24,18 @@ describe('Marpit SVG polyfill', () => {
 
     it('has no operations when running in not supported browser', () => {
       observe()
-      expect(spy).not.toBeCalled()
+      expect(spy).not.toHaveBeenCalled()
     })
 
     it('applies polyfill once when running in WebKit browser', () => {
       vendor.mockImplementation(() => 'Apple Computer, Inc.')
 
       observe()
-      expect(spy).toBeCalledTimes(1)
+      expect(spy).toHaveBeenCalledTimes(1)
 
       // Call requestAnimationFrame only once
       observe()
-      expect(spy).toBeCalledTimes(1)
+      expect(spy).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -113,14 +113,14 @@ describe('Marpit SVG polyfill', () => {
       const spy = jest.spyOn<any, any>(iframe.contentWindow, 'postMessage')
 
       webkit()
-      expect(spy).not.toBeCalled()
+      expect(spy).not.toHaveBeenCalled()
 
       Array.from(document.querySelectorAll('svg'), (svg) => {
         svg.currentScale = 2.5
       })
 
       webkit()
-      expect(spy).toBeCalledWith(
+      expect(spy).toHaveBeenCalledWith(
         'marpitSVGPolyfill:setZoomFactor,2.5',
         window.origin
       )
