@@ -5,6 +5,7 @@
 ### Changed
 
 - Propagate zoom factor in the top window into `<iframe>` through `postMessage` ([#24](https://github.com/marp-team/marpit-svg-polyfill/pull/24))
+- Migrate from TSLint to ESlint ([#25](https://github.com/marp-team/marpit-svg-polyfill/pull/25))
 
 ## v1.4.0 - 2020-07-09
 
