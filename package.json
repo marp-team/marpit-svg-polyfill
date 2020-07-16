@@ -1,6 +1,6 @@
 {
   "name": "@marp-team/marpit-svg-polyfill",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Polyfill for inline SVG slides rendered by Marpit",
   "license": "MIT",
   "author": {
