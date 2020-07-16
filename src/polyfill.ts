@@ -26,7 +26,6 @@ export const polyfills = () =>
 let previousZoomFactor: number
 let zoomFactorFromParent: number | undefined
 
-// tslint:disable-next-line: variable-name
 export const _resetCachedZoomFactor = () => {
   previousZoomFactor = 1
   zoomFactorFromParent = undefined
