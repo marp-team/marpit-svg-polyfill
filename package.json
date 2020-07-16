@@ -85,9 +85,6 @@
     "rollup-plugin-terser": "^6.1.0",
     "ts-jest": "26.1.1",
     "tslib": "^2.0.0",
-    "tslint": "^6.1.2",
-    "tslint-config-airbnb": "^5.11.2",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.6"
   },
   "peerDependencies": {
