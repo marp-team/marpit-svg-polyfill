@@ -1,4 +1,5 @@
 export const observerSymbol = Symbol()
+export const zoomFactorRecieverSymbol = Symbol()
 
 export function observe() {
   if (window[observerSymbol]) return
@@ -22,9 +23,44 @@ export function observe() {
 export const polyfills = () =>
   navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
-let previousZoomFactor: number | undefined = undefined
+let previousZoomFactor: number
+let zoomFactorFromParent: number | undefined
+
+// tslint:disable-next-line: variable-name
+export const _resetCachedZoomFactor = () => {
+  previousZoomFactor = 1
+  zoomFactorFromParent = undefined
+}
+
+_resetCachedZoomFactor()
 
 export function webkit(zoom?: number) {
+  if (!window[zoomFactorRecieverSymbol]) {
+    Object.defineProperty(window, zoomFactorRecieverSymbol, {
+      configurable: true,
+      value: true,
+    })
+
+    window.addEventListener('message', ({ data, origin }) => {
+      if (origin !== window.origin) return
+
+      try {
+        if (
+          data &&
+          typeof data === 'string' &&
+          data.startsWith('marpitSVGPolyfill:setZoomFactor,')
+        ) {
+          const [_, value] = data.split(',')
+          const parsed = Number.parseFloat(value)
+
+          if (!Number.isNaN(parsed)) zoomFactorFromParent = parsed
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    })
+  }
+
   let changedZoomFactor: false | number = false
 
   Array.from(
@@ -36,12 +72,7 @@ export function webkit(zoom?: number) {
       // NOTE: Safari reflects a zoom level to SVG's currentScale property, but
       // the other browsers will always return 1. You have to specify the zoom
       // factor manually if used in outdated Blink engine. (e.g. Electron)
-      const zoomFactor =
-        zoom ||
-        (window !== window.parent &&
-          window.parent['marpitSVGPolyfillZoomFactor']) ||
-        svg.currentScale ||
-        1
+      const zoomFactor = zoom || zoomFactorFromParent || svg.currentScale || 1
 
       if (previousZoomFactor !== zoomFactor) {
         previousZoomFactor = zoomFactor
@@ -64,9 +95,14 @@ export function webkit(zoom?: number) {
   )
 
   if (changedZoomFactor !== false) {
-    Object.defineProperty(window, 'marpitSVGPolyfillZoomFactor', {
-      configurable: true,
-      value: changedZoomFactor,
-    })
+    Array.from(
+      document.querySelectorAll<HTMLIFrameElement>('iframe'),
+      ({ contentWindow }) => {
+        contentWindow?.postMessage(
+          `marpitSVGPolyfill:setZoomFactor,${changedZoomFactor}`,
+          window.origin === 'null' ? '*' : window.origin
+        )
+      }
+    )
   }
 }

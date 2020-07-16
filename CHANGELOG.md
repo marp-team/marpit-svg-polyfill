@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Propagate zoom factor in the top window into `<iframe>` through `postMessage` ([#24](https://github.com/marp-team/marpit-svg-polyfill/pull/24))
+
 ## v1.4.0 - 2020-07-09
 
 ### Fixed
