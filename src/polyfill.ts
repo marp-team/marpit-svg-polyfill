@@ -23,8 +23,16 @@ export function observe() {
 export const polyfills = () =>
   navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
-let previousZoomFactor: number = 1
-let zoomFactorFromParent: number | undefined = undefined
+let previousZoomFactor: number
+let zoomFactorFromParent: number | undefined
+
+// tslint:disable-next-line: variable-name
+export const _resetCachedZoomFactor = () => {
+  previousZoomFactor = 1
+  zoomFactorFromParent = undefined
+}
+
+_resetCachedZoomFactor()
 
 export function webkit(zoom?: number) {
   if (!window[zoomFactorRecieverSymbol]) {

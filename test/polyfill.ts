@@ -1,11 +1,17 @@
 import { Marpit } from '@marp-team/marpit'
-import { observe, observerSymbol, webkit } from '../src/polyfill'
+import {
+  _resetCachedZoomFactor,
+  observe,
+  observerSymbol,
+  webkit,
+} from '../src/polyfill'
 
 let vendor: jest.SpyInstance
 
 beforeEach(() => {
   window[observerSymbol] = false
   vendor = jest.spyOn(navigator, 'vendor', 'get').mockImplementation(() => '')
+  _resetCachedZoomFactor()
 })
 
 describe('Marpit SVG polyfill', () => {
@@ -85,17 +91,38 @@ describe('Marpit SVG polyfill', () => {
       )
     })
 
-    it('prefers the zoom factor defined in parent.marpitSVGPolyfillZoomFactor', () => {
-      expect.hasAssertions()
-
-      jest.spyOn(window, 'parent', 'get').mockImplementation((): any => ({
-        marpitSVGPolyfillZoomFactor: 2,
-      }))
+    it('prefers the zoom factor that received in specific protocol', () => {
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: 'marpitSVGPolyfill:setZoomFactor,2',
+          origin: window.origin,
+        })
+      )
 
       webkit()
 
       Array.from(document.getElementsByTagName('section'), ({ style }) =>
         expect(style.transform).toContain('scale(1)')
+      )
+    })
+
+    it('sends message into children iframes when the zoom factor had changed', () => {
+      const iframe = document.createElement('iframe')
+      document.body.appendChild(iframe)
+
+      const spy = jest.spyOn<any, any>(iframe.contentWindow, 'postMessage')
+
+      webkit()
+      expect(spy).not.toBeCalled()
+
+      Array.from(document.querySelectorAll('svg'), (svg) => {
+        svg.currentScale = 2.5
+      })
+
+      webkit()
+      expect(spy).toBeCalledWith(
+        'marpitSVGPolyfill:setZoomFactor,2.5',
+        window.origin
       )
     })
   })
