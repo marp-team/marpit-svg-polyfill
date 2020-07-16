@@ -5,6 +5,6 @@ jest.mock('../src/polyfill')
 describe('Browser bundle', () => {
   it('observes to apply polyfill', () => {
     require('../src/polyfill.browser')
-    expect(observe).toBeCalledTimes(1)
+    expect(observe).toHaveBeenCalledTimes(1)
   })
 })

@@ -28,6 +28,6 @@ export default [
   {
     plugins,
     input: `src/polyfill.browser.ts`,
-    output: { file: main.replace(/\.[^\.]+$/, '.browser.js'), format: 'iife' },
+    output: { file: main.replace(/\.[^.]+$/, '.browser.js'), format: 'iife' },
   },
 ]

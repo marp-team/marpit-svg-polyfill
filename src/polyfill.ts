@@ -26,7 +26,6 @@ export const polyfills = () =>
 let previousZoomFactor: number
 let zoomFactorFromParent: number | undefined
 
-// tslint:disable-next-line: variable-name
 export const _resetCachedZoomFactor = () => {
   previousZoomFactor = 1
   zoomFactorFromParent = undefined
@@ -50,7 +49,7 @@ export function webkit(zoom?: number) {
           typeof data === 'string' &&
           data.startsWith('marpitSVGPolyfill:setZoomFactor,')
         ) {
-          const [_, value] = data.split(',')
+          const [, value] = data.split(',')
           const parsed = Number.parseFloat(value)
 
           if (!Number.isNaN(parsed)) zoomFactorFromParent = parsed
