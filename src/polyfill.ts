@@ -1,3 +1,5 @@
+const msgPrefix = 'marpitSVGPolyfill:setZoomFactor,'
+
 export const observerSymbol = Symbol()
 export const zoomFactorRecieverSymbol = Symbol()
 
@@ -44,11 +46,7 @@ export function webkit(zoom?: number) {
       if (origin !== window.origin) return
 
       try {
-        if (
-          data &&
-          typeof data === 'string' &&
-          data.startsWith('marpitSVGPolyfill:setZoomFactor,')
-        ) {
+        if (data && typeof data === 'string' && data.startsWith(msgPrefix)) {
           const [, value] = data.split(',')
           const parsed = Number.parseFloat(value)
 
@@ -98,7 +96,7 @@ export function webkit(zoom?: number) {
       document.querySelectorAll<HTMLIFrameElement>('iframe'),
       ({ contentWindow }) => {
         contentWindow?.postMessage(
-          `marpitSVGPolyfill:setZoomFactor,${changedZoomFactor}`,
+          `${msgPrefix}${changedZoomFactor}`,
           window.origin === 'null' ? '*' : window.origin
         )
       }
