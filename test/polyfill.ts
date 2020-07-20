@@ -9,7 +9,7 @@ import {
 let vendor: jest.SpyInstance
 
 beforeEach(() => {
-  window[observerSymbol] = false
+  delete document[observerSymbol]
   vendor = jest.spyOn(navigator, 'vendor', 'get').mockImplementation(() => '')
   _resetCachedZoomFactor()
 })
