@@ -37,6 +37,37 @@ describe('Marpit SVG polyfill', () => {
       observe()
       expect(spy).toHaveBeenCalledTimes(1)
     })
+
+    describe('Clean-up function', () => {
+      it('returns function for clean-up', () => {
+        vendor.mockImplementation(() => 'Apple Computer, Inc.')
+
+        const cleanup = observe()
+        expect(cleanup).toStrictEqual(expect.any(Function))
+
+        // Observer can enable again after cleaning up
+        cleanup()
+        observe()
+        expect(spy).toHaveBeenCalledTimes(2)
+      })
+    })
+
+    describe('Different target', () => {
+      it('availables observation for different target', () => {
+        vendor.mockImplementation(() => 'Apple Computer, Inc.')
+
+        const element = document.createElement('div')
+        const querySpy = jest.spyOn(element, 'querySelectorAll')
+        const cleanup = observe(element)
+
+        expect(element[observerSymbol]).toStrictEqual(cleanup)
+        expect(querySpy).toHaveBeenCalled()
+
+        // Returns always same clean-up function even if observing some times
+        expect(observe(element)).toStrictEqual(cleanup)
+        expect(spy).toHaveBeenCalledTimes(1)
+      })
+    })
   })
 
   describe('#webkit', () => {

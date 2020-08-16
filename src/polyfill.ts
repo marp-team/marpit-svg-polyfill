@@ -12,6 +12,7 @@ export function observe(target: ParentNode = document): () => void {
 
   const cleanup = () => {
     enableObserver = false
+    delete target[observerSymbol]
   }
 
   Object.defineProperty(target, observerSymbol, {
