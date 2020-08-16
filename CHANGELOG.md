@@ -2,9 +2,14 @@
 
 ## [Unreleased]
 
-### Changed
+### Added
 
 - Allow to change the target of observer ([#28](https://github.com/marp-team/marpit-svg-polyfill/pull/28))
+- Return clean-up function from `observe()` ([#28](https://github.com/marp-team/marpit-svg-polyfill/pull/28))
+
+### Changed
+
+- Upgrade dependent packages to the latest version ([#29](https://github.com/marp-team/marpit-svg-polyfill/pull/29))
 
 ## v1.5.0 - 2020-07-16
 
