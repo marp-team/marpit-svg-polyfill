@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Allow to change the target of observer ([#28](https://github.com/marp-team/marpit-svg-polyfill/pull/28))
+
 ## v1.5.0 - 2020-07-16
 
 ### Changed

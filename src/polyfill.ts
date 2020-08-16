@@ -1,28 +1,39 @@
 const msgPrefix = 'marpitSVGPolyfill:setZoomFactor,'
 
+export type PolyfillOption = { target?: ParentNode }
+
 export const observerSymbol = Symbol()
 export const zoomFactorRecieverSymbol = Symbol()
 
-export function observe() {
-  if (window[observerSymbol]) return
+export function observe(target: ParentNode = document): () => void {
+  if (target[observerSymbol]) return target[observerSymbol]
 
-  Object.defineProperty(window, observerSymbol, {
+  let enableObserver = true
+
+  const cleanup = () => {
+    enableObserver = false
+    delete target[observerSymbol]
+  }
+
+  Object.defineProperty(target, observerSymbol, {
     configurable: true,
-    value: true,
+    value: cleanup,
   })
 
   const observedPolyfills = polyfills()
 
   if (observedPolyfills.length > 0) {
     const observer = () => {
-      for (const polyfill of observedPolyfills) polyfill()
-      window.requestAnimationFrame(observer)
+      for (const polyfill of observedPolyfills) polyfill({ target })
+      if (enableObserver) window.requestAnimationFrame(observer)
     }
     observer()
   }
+
+  return cleanup
 }
 
-export const polyfills = () =>
+export const polyfills = (): Array<(opts: PolyfillOption) => void> =>
   navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
 
 let previousZoomFactor: number
@@ -35,7 +46,10 @@ export const _resetCachedZoomFactor = () => {
 
 _resetCachedZoomFactor()
 
-export function webkit(zoom?: number) {
+export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
+  const target = (typeof opts === 'object' && opts.target) || document
+  const zoom = typeof opts === 'object' ? opts.zoom : opts
+
   if (!window[zoomFactorRecieverSymbol]) {
     Object.defineProperty(window, zoomFactorRecieverSymbol, {
       configurable: true,
@@ -61,7 +75,7 @@ export function webkit(zoom?: number) {
   let changedZoomFactor: false | number = false
 
   Array.from(
-    document.querySelectorAll<SVGSVGElement>('svg[data-marpit-svg]'),
+    target.querySelectorAll<SVGSVGElement>('svg[data-marpit-svg]'),
     (svg) => {
       const { children, clientHeight, clientWidth, viewBox } = svg
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
@@ -93,7 +107,7 @@ export function webkit(zoom?: number) {
 
   if (changedZoomFactor !== false) {
     Array.from(
-      document.querySelectorAll<HTMLIFrameElement>('iframe'),
+      target.querySelectorAll<HTMLIFrameElement>('iframe'),
       ({ contentWindow }) => {
         contentWindow?.postMessage(
           `${msgPrefix}${changedZoomFactor}`,

@@ -1,2 +1,8 @@
 /* istanbul ignore file */
-export { observe as default, observe, polyfills, webkit } from './polyfill'
+export {
+  PolyfillOption,
+  observe as default,
+  observe,
+  polyfills,
+  webkit,
+} from './polyfill'
