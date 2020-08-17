@@ -77,7 +77,6 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
   Array.from(
     target.querySelectorAll<SVGSVGElement>('svg[data-marpit-svg]'),
     (svg) => {
-      const { children, clientHeight, clientWidth, viewBox } = svg
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
 
       // NOTE: Safari reflects a zoom level to SVG's currentScale property, but
@@ -90,17 +89,28 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
         changedZoomFactor = zoomFactor
       }
 
-      const width = viewBox.baseVal.width / zoomFactor
-      const height = viewBox.baseVal.height / zoomFactor
-      const scale = Math.min(clientHeight / height, clientWidth / width)
+      const svgRect = svg.getBoundingClientRect()
+      const { length } = svg.children
 
-      for (let i = 0; i < children.length; i += 1) {
-        const { style } = children[i].firstChild as HTMLElement
+      for (let i = 0; i < length; i += 1) {
+        const fo = svg.children[i] as SVGForeignObjectElement
+        const matrix = fo.getScreenCTM()
 
-        if (!style.position) style.position = 'fixed'
-        if (!style.transformOrigin) style.transformOrigin = '0 0'
+        if (matrix) {
+          const x = fo.x.baseVal.value
+          const y = fo.y.baseVal.value
 
-        style.transform = `scale(${scale}) translateZ(0)`
+          const section = fo.firstChild as HTMLElement
+          const { style } = section
+
+          if (!style.transformOrigin) style.transformOrigin = `${-x}px ${-y}px`
+
+          style.transform = `scale(${zoomFactor}) matrix(${matrix.a}, ${
+            matrix.b
+          }, ${matrix.c}, ${matrix.d}, ${matrix.e - svgRect.left}, ${
+            matrix.f - svgRect.top
+          })`
+        }
       }
     }
   )
