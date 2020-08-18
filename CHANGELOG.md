@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Use transformation matrix generated from `getScreenCTM()` ([#30](https://github.com/marp-team/marpit-svg-polyfill/pull/30))
+
 ## v1.6.0 - 2020-08-16
 
 ### Added
