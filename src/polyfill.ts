@@ -105,11 +105,13 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
 
           if (!style.transformOrigin) style.transformOrigin = `${-x}px ${-y}px`
 
+          // translateZ with non-zero value is required to work interactive
+          // content such as animation GIF, but it gets blurry text.
           style.transform = `scale(${zoomFactor}) matrix(${matrix.a}, ${
             matrix.b
           }, ${matrix.c}, ${matrix.d}, ${matrix.e - svgRect.left}, ${
             matrix.f - svgRect.top
-          })`
+          }) translateZ(0.0001px)`
         }
       }
     }
