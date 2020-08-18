@@ -75,11 +75,12 @@ describe('Marpit SVG polyfill', () => {
       const marpit = new Marpit({ inlineSVG: true })
       document.body.innerHTML = marpit.render('').html
 
-      Array.from(document.querySelectorAll('svg'), (svg: any) => {
-        jest.spyOn(svg, 'clientWidth', 'get').mockImplementation(() => 640)
-        jest.spyOn(svg, 'clientHeight', 'get').mockImplementation(() => 360)
-        svg.viewBox = { baseVal: { width: 1280, height: 720 } }
-      })
+      jest
+        .spyOn<any, any>(SVGElement.prototype, 'getBoundingClientRect')
+        .mockReturnValue({ left: 0, top: 0, width: 640, height: 360 })
+
+      const matrix = { a: 0.5, b: 0, c: 0, d: 0.5, e: 0, f: 0 }
+      ;(SVGElement.prototype as any).getScreenCTM = () => matrix
     })
 
     it('applies transform style to SVG element for repainting', () => {
@@ -97,14 +98,14 @@ describe('Marpit SVG polyfill', () => {
 
       Array.from(sections, ({ style }) => {
         expect(style.transformOrigin).toBeFalsy()
-        expect(style.transform).not.toContain('scale')
+        expect(style.transform).not.toContain('matrix')
       })
 
       webkit()
 
       Array.from(sections, ({ style }) => {
-        expect(style.transformOrigin).toBe('0 0')
-        expect(style.transform).toContain('scale(0.5)')
+        expect(style.transformOrigin).toBe('0px 0px')
+        expect(style.transform).toContain('matrix(0.5, 0, 0, 0.5, 0, 0)')
       })
     })
 
@@ -118,7 +119,7 @@ describe('Marpit SVG polyfill', () => {
       webkit()
 
       Array.from(document.getElementsByTagName('section'), ({ style }) =>
-        expect(style.transform).toContain('scale(0.625)')
+        expect(style.transform).toContain('scale(1.25)')
       )
     })
 
@@ -133,7 +134,7 @@ describe('Marpit SVG polyfill', () => {
       webkit()
 
       Array.from(document.getElementsByTagName('section'), ({ style }) =>
-        expect(style.transform).toContain('scale(1)')
+        expect(style.transform).toContain('scale(2)')
       )
     })
 

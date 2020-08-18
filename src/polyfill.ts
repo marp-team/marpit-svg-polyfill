@@ -97,8 +97,8 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
         const matrix = fo.getScreenCTM()
 
         if (matrix) {
-          const x = fo.x.baseVal.value
-          const y = fo.y.baseVal.value
+          const x = fo.x?.baseVal.value ?? 0
+          const y = fo.y?.baseVal.value ?? 0
 
           const section = fo.firstChild as HTMLElement
           const { style } = section
