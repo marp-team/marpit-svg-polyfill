@@ -96,6 +96,11 @@
   "peerDependencies": {
     "@marp-team/marpit": ">=0.5.0"
   },
+  "peerDependenciesMeta": {
+    "@marp-team/marpit": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   }
