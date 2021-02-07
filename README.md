@@ -1,7 +1,7 @@
 # @marp-team/marpit-svg-polyfill
 
-[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square&logo=circleci)](https://circleci.com/gh/marp-team/marpit-svg-polyfill/)
-[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-svg-polyfill/master.svg?style=flat-square&logo=codecov)](https://codecov.io/gh/marp-team/marpit-svg-polyfill)
+[![CircleCI](https://img.shields.io/circleci/project/github/marp-team/marpit-svg-polyfill/main.svg?style=flat-square&logo=circleci)](https://circleci.com/gh/marp-team/marpit-svg-polyfill/)
+[![Codecov](https://img.shields.io/codecov/c/github/marp-team/marpit-svg-polyfill/main.svg?style=flat-square&logo=codecov)](https://codecov.io/gh/marp-team/marpit-svg-polyfill)
 [![npm](https://img.shields.io/npm/v/@marp-team/marpit-svg-polyfill.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/@marp-team/marpit-svg-polyfill)
 [![LICENSE](https://img.shields.io/github/license/marp-team/marpit-svg-polyfill.svg?style=flat-square)](./LICENSE)
 
@@ -38,7 +38,7 @@ The polyfill for [the inline SVG slide][inline-svg] rendered by [Marpit].
 
 But unfortunately, WebKit browser has not scaled the wrapped HTML correctly. It is caused from a long standing [bug 23113](https://bugs.webkit.org/show_bug.cgi?id=23113), and it does not resolved in the last 10 years.
 
-![](https://raw.githubusercontent.com/marp-team/marpit-svg-polyfill/master/docs/webkit-bug.png)
+![](https://raw.githubusercontent.com/marp-team/marpit-svg-polyfill/main/docs/webkit-bug.png)
 
 Through inspector, we have not confirmed that there is a wrong layout in SVG itself and around. Thus, the problem has in a rendering of the parent SVG.
 
