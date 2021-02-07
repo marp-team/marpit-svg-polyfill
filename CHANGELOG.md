@@ -9,6 +9,7 @@
 ### Changed
 
 - Upgrade development Node LTS ans dependent packages to the latest version ([#34](https://github.com/marp-team/marpit-svg-polyfill/pull/34))
+- Rename `master` branch to `main` ([#35](https://github.com/marp-team/marpit-svg-polyfill/pull/35))
 
 ## v1.7.0 - 2020-08-18
 
