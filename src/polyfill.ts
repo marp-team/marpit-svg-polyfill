@@ -100,7 +100,7 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
           const x = fo.x?.baseVal.value ?? 0
           const y = fo.y?.baseVal.value ?? 0
 
-          const section = fo.firstChild as HTMLElement
+          const section = fo.firstElementChild as HTMLElement
           const { style } = section
 
           if (!style.transformOrigin) style.transformOrigin = `${-x}px ${-y}px`
