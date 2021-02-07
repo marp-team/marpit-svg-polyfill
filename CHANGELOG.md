@@ -6,6 +6,10 @@
 
 - Fix Marpit's `<section>` detection to use `firstElementChild` instead of `firstChild` ([#33](https://github.com/marp-team/marpit-svg-polyfill/pull/33))
 
+### Changed
+
+- Upgrade development Node LTS ans dependent packages to the latest version ([#34](https://github.com/marp-team/marpit-svg-polyfill/pull/34))
+
 ## v1.7.0 - 2020-08-18
 
 ### Changed
