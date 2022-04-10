@@ -109,6 +109,18 @@ describe('Marpit SVG polyfill', () => {
       })
     })
 
+    it('applies calculated transform style even if prepended unknown element before the section', () => {
+      expect.hasAssertions()
+
+      const section = document.getElementsByTagName('section')[0]
+      section.insertAdjacentHTML('beforebegin', '<div>unknown</div>')
+
+      webkit()
+
+      expect(section.style.transformOrigin).toBe('0px 0px')
+      expect(section.style.transform).toContain('matrix(0.5, 0, 0, 0.5, 0, 0)')
+    })
+
     it("takes account of SVG's currentScale property", () => {
       expect.hasAssertions()
 
