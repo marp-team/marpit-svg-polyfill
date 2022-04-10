@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Breaking
+
+- Required Node 10 and later to install ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
+
+### Changed
+
+- Upgrade development Node ans dependent packages to the latest version ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
+
 ## v1.7.1 - 2021-02-07
 
 ### Fixed
