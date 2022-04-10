@@ -8,6 +8,9 @@ module.exports = {
   rules: {
     'import/order': ['error', { alphabetize: { order: 'asc' } }],
   },
+  settings: {
+    'import/ignore': ['@rollup/plugin-node-resolve'],
+  },
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
@@ -16,7 +19,7 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:import/typescript',
-        'prettier/@typescript-eslint',
+        'prettier',
       ],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
