@@ -64,7 +64,7 @@ commands:
       - install:
           force: << parameters.force >>
 
-  test:
+  lint:
     steps:
       - run:
           name: Prettier formatting
@@ -78,6 +78,8 @@ commands:
           name: TypeScript type checking
           command: yarn check:ts
 
+  test:
+    steps:
       - run:
           name: Jest
           command: yarn test:coverage --ci --maxWorkers=2 --reporters=default --reporters=jest-junit
@@ -113,8 +115,8 @@ jobs:
       name: node
       version: '12.22'
     steps:
-      - prepare:
-          force: true
+      - prepare
+      - lint
       - test
 
   test-node14:
@@ -123,6 +125,7 @@ jobs:
       version: '14.19'
     steps:
       - prepare
+      - lint
       - test
 
   test-node16:
@@ -131,6 +134,7 @@ jobs:
       version: '16.14'
     steps:
       - prepare
+      - lint
       - test
 
 workflows:
