@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.2.0
+
 executors:
   node:
     parameters:
@@ -7,7 +10,7 @@ executors:
         type: string
         default: lts
     docker:
-      - image: circleci/node:<< parameters.version >>
+      - image: cimg/node:<< parameters.version >>
     working_directory: ~/marpit-svg-polyfill
 
 commands:
@@ -18,7 +21,10 @@ commands:
         default: []
       yarn:
         type: string
-        default: 1.22.4
+        default: '^1.22.18'
+      force:
+        type: boolean
+        default: false
     steps:
       - run:
           name: Upgrade yarn for current user
@@ -30,7 +36,7 @@ commands:
             - v2.1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}-
             - v2.1-dependencies-{{ .Environment.CIRCLE_JOB }}-
 
-      - run: yarn install
+      - run: yarn install --frozen-lockfile <<# parameters.force >>--ignore-engines<</ parameters.force >>
       - steps: << parameters.postinstall >>
 
       - save_cache:
@@ -46,13 +52,20 @@ commands:
           postinstall:
             - run: yarn audit
 
-  test:
+  prepare:
+    parameters:
+      force:
+        type: boolean
+        default: false
     steps:
       - run: node --version
 
       - checkout
-      - install
+      - install:
+          force: << parameters.force >>
 
+  test:
+    steps:
       - run:
           name: Prettier formatting
           command: yarn check:format
@@ -71,7 +84,7 @@ commands:
           environment:
             JEST_JUNIT_OUTPUT_DIR: tmp/test-results
 
-      - run: yarn codecov
+      - codecov/upload
 
       - store_test_results:
           path: tmp/test-results
@@ -89,22 +102,35 @@ jobs:
   test-node10:
     executor:
       name: node
-      version: '10'
+      version: '10.24'
     steps:
+      - prepare:
+          force: true
       - test
 
   test-node12:
     executor:
       name: node
-      version: '12.18.2' # Specify LTS version for development
+      version: '12.22'
     steps:
+      - prepare:
+          force: true
       - test
 
   test-node14:
     executor:
       name: node
-      version: '14'
+      version: '14.19'
     steps:
+      - prepare
+      - test
+
+  test-node16:
+    executor:
+      name: node
+      version: '16.14'
+    steps:
+      - prepare
       - test
 
 workflows:
@@ -118,5 +144,8 @@ workflows:
           requires:
             - audit
       - test-node14:
+          requires:
+            - audit
+      - test-node16:
           requires:
             - audit
