@@ -94,24 +94,37 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
 
       for (let i = 0; i < length; i += 1) {
         const fo = svg.children[i] as SVGForeignObjectElement
-        const matrix = fo.getScreenCTM()
 
-        if (matrix) {
-          const x = fo.x?.baseVal.value ?? 0
-          const y = fo.y?.baseVal.value ?? 0
+        if (fo.getScreenCTM) {
+          const matrix = fo.getScreenCTM()
 
-          const section = fo.firstElementChild as HTMLElement
-          const { style } = section
+          if (matrix) {
+            const x = fo.x?.baseVal.value ?? 0
+            const y = fo.y?.baseVal.value ?? 0
 
-          if (!style.transformOrigin) style.transformOrigin = `${-x}px ${-y}px`
+            const foChildrenLength = fo.children.length
 
-          // translateZ with non-zero value is required to work interactive
-          // content such as animation GIF, but it gets blurry text.
-          style.transform = `scale(${zoomFactor}) matrix(${matrix.a}, ${
-            matrix.b
-          }, ${matrix.c}, ${matrix.d}, ${matrix.e - svgRect.left}, ${
-            matrix.f - svgRect.top
-          }) translateZ(0.0001px)`
+            for (let j = 0; j < foChildrenLength; j += 1) {
+              const section = fo.children[j] as Element
+
+              if (section.tagName === 'SECTION') {
+                const { style } = section as HTMLElement
+
+                if (!style.transformOrigin)
+                  style.transformOrigin = `${-x}px ${-y}px`
+
+                // translateZ with non-zero value is required to work interactive
+                // content such as animation GIF, but it gets blurry text.
+                style.transform = `scale(${zoomFactor}) matrix(${matrix.a}, ${
+                  matrix.b
+                }, ${matrix.c}, ${matrix.d}, ${matrix.e - svgRect.left}, ${
+                  matrix.f - svgRect.top
+                }) translateZ(0.0001px)`
+
+                break
+              }
+            }
+          }
         }
       }
     }
