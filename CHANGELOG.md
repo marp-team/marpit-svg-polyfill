@@ -4,7 +4,11 @@
 
 ### Breaking
 
-- Required Node 10 and later to install ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
+- Required Node 10 and later to install (but recommend to use Node 14 and later) ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
+
+### Fixed
+
+- Make robust from element injection to `<foreignObject>` ([#46](https://github.com/marp-team/marpit-svg-polyfill/pull/46))
 
 ### Changed
 
