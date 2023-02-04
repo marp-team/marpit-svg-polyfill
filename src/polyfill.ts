@@ -1,6 +1,11 @@
+import { isRequiredPolyfill } from './utils/feature-detection'
+
 const msgPrefix = 'marpitSVGPolyfill:setZoomFactor,'
 
 export type PolyfillOption = { target?: ParentNode }
+
+export type PolyfillsType = Array<(opts: PolyfillOption) => void>
+export type PolyfillsReturnType = PolyfillsType & PromiseLike<PolyfillsType>
 
 export const observerSymbol = Symbol()
 export const zoomFactorRecieverSymbol = Symbol()
@@ -20,21 +25,51 @@ export function observe(target: ParentNode = document): () => void {
     value: cleanup,
   })
 
-  const observedPolyfills = polyfills()
+  let polyfillsArray: PolyfillsType = []
+  let polyfillsPromiseDone = false
 
-  if (observedPolyfills.length > 0) {
-    const observer = () => {
-      for (const polyfill of observedPolyfills) polyfill({ target })
-      if (enableObserver) window.requestAnimationFrame(observer)
+  ;(async () => {
+    try {
+      polyfillsArray = await polyfills()
+    } finally {
+      polyfillsPromiseDone = true
     }
-    observer()
+  })()
+
+  const observer = () => {
+    for (const polyfill of polyfillsArray) polyfill({ target })
+
+    if (polyfillsPromiseDone && polyfillsArray.length === 0) return
+    if (enableObserver) window.requestAnimationFrame(observer)
   }
+  observer()
 
   return cleanup
 }
 
-export const polyfills = (): Array<(opts: PolyfillOption) => void> =>
-  navigator.vendor === 'Apple Computer, Inc.' ? [webkit] : []
+export const polyfills = (): PolyfillsReturnType => {
+  const isSafari = navigator.vendor === 'Apple Computer, Inc.'
+
+  // Sync version of polyfills() has no feature detection. Detect only by the
+  // kind of browser.
+  const polyfillsSync: PolyfillsType = isSafari ? [webkit] : []
+
+  const polyfillsPromiseLike: PromiseLike<PolyfillsType> = {
+    then: ((resolve) => {
+      if (isSafari) {
+        isRequiredPolyfill().then((required) => {
+          resolve?.(required ? [webkit] : [])
+        })
+      } else {
+        resolve?.([])
+      }
+
+      return polyfillsPromiseLike
+    }) as PolyfillsReturnType['then'],
+  }
+
+  return Object.assign(polyfillsSync, polyfillsPromiseLike)
+}
 
 let previousZoomFactor: number
 let zoomFactorFromParent: number | undefined

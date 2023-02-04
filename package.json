@@ -43,6 +43,9 @@
     "preset": "ts-jest",
     "restoreMocks": true,
     "testEnvironment": "jsdom",
+    "testEnvironmentOptions": {
+      "resources": "usable"
+    },
     "testMatch": [
       "<rootDir>/test/**/!(@(.|_))*.[jt]s"
     ]
@@ -78,6 +81,7 @@
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
+    "canvas": "^2.11.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",

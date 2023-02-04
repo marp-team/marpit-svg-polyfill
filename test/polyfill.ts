@@ -19,23 +19,40 @@ describe('Marpit SVG polyfill', () => {
     let spy: jest.SpyInstance
 
     beforeEach(() => {
-      spy = jest.spyOn(window, 'requestAnimationFrame')
+      document.body.innerHTML = '<svg data-marpit-svg></svg>'
+      spy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation()
     })
 
-    it('has no operations when running in not supported browser', () => {
+    it('has no operations when running in not supported browser', async () => {
       observe()
-      expect(spy).not.toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      // Wait for detecting whether polyfill is required
+      await new Promise((res) => setTimeout(res, 0))
+      spy.mock.calls[0][0]()
+
+      const svg = document.querySelector<SVGElement>('svg[data-marpit-svg]')
+      expect(svg?.style.transform).toBeFalsy()
     })
 
-    it('applies polyfill once when running in WebKit browser', () => {
+    it('applies polyfill once when running in WebKit browser', async () => {
       vendor.mockImplementation(() => 'Apple Computer, Inc.')
 
       observe()
       expect(spy).toHaveBeenCalledTimes(1)
 
-      // Call requestAnimationFrame only once
-      observe()
-      expect(spy).toHaveBeenCalledTimes(1)
+      const observer = spy.mock.calls[0][0]
+
+      // Wait for detecting whether polyfill is required
+      await new Promise((res) => setTimeout(res, 0))
+      observer()
+
+      // And wait canvas rendering for feature detection
+      await new Promise((res) => setTimeout(res, 0))
+      observer()
+
+      const svg = document.querySelector<SVGElement>('svg[data-marpit-svg]')
+      expect(svg?.style.transform).toBeTruthy()
     })
 
     describe('Clean-up function', () => {
@@ -53,19 +70,23 @@ describe('Marpit SVG polyfill', () => {
     })
 
     describe('Different target', () => {
-      it('availables observation for different target', () => {
+      it('availables observation for different target', async () => {
         vendor.mockImplementation(() => 'Apple Computer, Inc.')
 
         const element = document.createElement('div')
         const querySpy = jest.spyOn(element, 'querySelectorAll')
         const cleanup = observe(element)
+        expect(spy).toHaveBeenCalledTimes(1)
+
+        // Wait for detecting whether polyfill is required
+        await new Promise((res) => setTimeout(res, 0))
+        spy.mock.calls[0][0]()
 
         expect(element[observerSymbol]).toStrictEqual(cleanup)
         expect(querySpy).toHaveBeenCalled()
 
         // Returns always same clean-up function even if observing some times
         expect(observe(element)).toStrictEqual(cleanup)
-        expect(spy).toHaveBeenCalledTimes(1)
       })
     })
   })
@@ -84,11 +105,11 @@ describe('Marpit SVG polyfill', () => {
     })
 
     it('applies transform style to SVG element for repainting', () => {
-      const svg = <SVGElement>document.querySelector('svg[data-marpit-svg]')
-      expect(svg.style.transform).not.toContain('translateZ(0)')
+      const svg = document.querySelector<SVGElement>('svg[data-marpit-svg]')
+      expect(svg?.style.transform).not.toContain('translateZ(0)')
 
       webkit()
-      expect(svg.style.transform).toContain('translateZ(0)')
+      expect(svg?.style.transform).toContain('translateZ(0)')
     })
 
     it('applies calculated transform style to section elements for scaling', () => {
