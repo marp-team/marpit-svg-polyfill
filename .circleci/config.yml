@@ -113,7 +113,16 @@ jobs:
   test-node16:
     executor:
       name: node
-      version: '18.14'
+      version: '16.19'
+    steps:
+      - prepare
+      - lint
+      - test
+
+  test-node18:
+    executor:
+      name: node
+      version: '18.13'
     steps:
       - prepare
       - lint
@@ -127,5 +136,8 @@ workflows:
           requires:
             - audit
       - test-node16:
+          requires:
+            - audit
+      - test-node18:
           requires:
             - audit
