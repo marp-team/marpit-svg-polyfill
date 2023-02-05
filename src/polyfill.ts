@@ -2,14 +2,24 @@ import { isRequiredPolyfill } from './utils/feature-detection'
 
 const msgPrefix = 'marpitSVGPolyfill:setZoomFactor,'
 
-export type PolyfillOption = { target?: ParentNode }
+type PolyfillsRawArray = Array<(opts: PolyfillOption) => void>
+type PolyfillsArray = PolyfillsRawArray & PromiseLike<PolyfillsRawArray>
 
-export type PolyfillsType = Array<(opts: PolyfillOption) => void>
-export type PolyfillsReturnType = PolyfillsType & PromiseLike<PolyfillsType>
+export type PolyfillOption = {
+  /** The parent node to observe. It's useful for observing Marpit slides inside shadow DOM. */
+  target?: ParentNode
+}
 
 export const observerSymbol = Symbol()
 export const zoomFactorRecieverSymbol = Symbol()
 
+/**
+ * Start observing DOM to apply polyfills.
+ *
+ * @param target The parent node to observe. It's useful for observing Marpit
+ *     slides inside shadow DOM. Default is `document`.
+ * @returns A function for stopping and cleaning up observation.
+ */
 export function observe(target: ParentNode = document): () => void {
   if (target[observerSymbol]) return target[observerSymbol]
 
@@ -25,7 +35,7 @@ export function observe(target: ParentNode = document): () => void {
     value: cleanup,
   })
 
-  let polyfillsArray: PolyfillsType = []
+  let polyfillsArray: PolyfillsRawArray = []
   let polyfillsPromiseDone = false
 
   ;(async () => {
@@ -47,14 +57,33 @@ export function observe(target: ParentNode = document): () => void {
   return cleanup
 }
 
-export const polyfills = (): PolyfillsReturnType => {
+/**
+ * Returns an array of polyfill functions that must call for the current browser
+ * environment.
+ *
+ * Including polyfills in the returned array are simply determined by the kind of
+ * browser. If you want detailed polyfills that were passed accurate feature
+ * detections, call asyncronous version by `polyfills().then()` or
+ * `await polyfills()`.
+ *
+ * ```js
+ * import { polyfills } from '@marp-team/marpit-svg-polyfill'
+ *
+ * polyfills().then((polyfills) => {
+ *  for (const polyfill of polyfills) polyfill()
+ * })
+ * ```
+ *
+ * @returns A thenable array including polyfill functions
+ */
+export const polyfills = (): PolyfillsArray => {
   const isSafari = navigator.vendor === 'Apple Computer, Inc.'
 
   // Sync version of polyfills() has no feature detection. Detect only by the
   // kind of browser.
-  const polyfillsSync: PolyfillsType = isSafari ? [webkit] : []
+  const polyfillsSync: PolyfillsRawArray = isSafari ? [webkit] : []
 
-  const polyfillsPromiseLike: PromiseLike<PolyfillsType> = {
+  const polyfillsPromiseLike: PromiseLike<PolyfillsRawArray> = {
     then: ((resolve) => {
       if (isSafari) {
         isRequiredPolyfill().then((required) => {
@@ -65,7 +94,7 @@ export const polyfills = (): PolyfillsReturnType => {
       }
 
       return polyfillsPromiseLike
-    }) as PolyfillsReturnType['then'],
+    }) as PolyfillsArray['then'],
   }
 
   return Object.assign(polyfillsSync, polyfillsPromiseLike)
@@ -81,7 +110,14 @@ export const _resetCachedZoomFactor = () => {
 
 _resetCachedZoomFactor()
 
-export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
+export function webkit(
+  opts?:
+    | number
+    | (PolyfillOption & {
+        /** A zoom factor applied in the current view. You have to specify manually because there is not a reliable way to get the actual zoom factor in the browser. */
+        zoom?: number
+      })
+) {
   const target = (typeof opts === 'object' && opts.target) || document
   const zoom = typeof opts === 'object' ? opts.zoom : opts
 
@@ -114,9 +150,9 @@ export function webkit(opts?: number | (PolyfillOption & { zoom?: number })) {
     (svg) => {
       if (!svg.style.transform) svg.style.transform = 'translateZ(0)'
 
-      // NOTE: Safari reflects a zoom level to SVG's currentScale property, but
-      // the other browsers will always return 1. You have to specify the zoom
-      // factor manually if used in outdated Blink engine. (e.g. Electron)
+      // Safari 16.3 and eariler versions had applied the current scale factor
+      // of the view to `currentScale` property. In others, it becomes `1` as
+      // long as not set the custom scale to SVG element.
       const zoomFactor = zoom || zoomFactorFromParent || svg.currentScale || 1
 
       if (previousZoomFactor !== zoomFactor) {
