@@ -5,6 +5,13 @@ module.exports = {
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:import/recommended', 'prettier'],
+  parser: '@babel/eslint-parser',
+  parserOptions: {
+    babelOptions: {
+      plugins: [require.resolve('@babel/plugin-syntax-import-assertions')],
+    },
+    requireConfigFile: false,
+  },
   rules: {
     'import/order': ['error', { alphabetize: { order: 'asc' } }],
   },

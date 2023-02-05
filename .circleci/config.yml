@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@3.2.0
+  codecov: codecov/codecov@3.2.4
 
 executors:
   node:
@@ -101,28 +101,10 @@ jobs:
     steps:
       - audit
 
-  test-node10:
-    executor:
-      name: node
-      version: '10.24'
-    steps:
-      - prepare:
-          force: true
-      - test
-
-  test-node12:
-    executor:
-      name: node
-      version: '12.22'
-    steps:
-      - prepare
-      - lint
-      - test
-
   test-node14:
     executor:
       name: node
-      version: '14.19'
+      version: '14.21'
     steps:
       - prepare
       - lint
@@ -131,7 +113,7 @@ jobs:
   test-node16:
     executor:
       name: node
-      version: '16.14'
+      version: '18.14'
     steps:
       - prepare
       - lint
@@ -141,12 +123,6 @@ workflows:
   test:
     jobs:
       - audit
-      - test-node10:
-          requires:
-            - audit
-      - test-node12:
-          requires:
-            - audit
       - test-node14:
           requires:
             - audit
