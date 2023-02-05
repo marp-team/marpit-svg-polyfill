@@ -127,6 +127,11 @@ export function webkit(
       value: true,
     })
 
+    // Repaint viewport forcibly when initial observing, to clear buggy SVG debris
+    document.body.style['zoom'] = 1.0001
+    void document.body.offsetHeight
+    document.body.style['zoom'] = 1
+
     window.addEventListener('message', ({ data, origin }) => {
       if (origin !== window.origin) return
 
