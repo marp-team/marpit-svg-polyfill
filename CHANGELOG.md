@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade development Node and dependent packages to the latest version ([#51](https://github.com/marp-team/marpit-svg-polyfill/pull/51))
+
 ## v2.0.0 - 2022-04-12
 
 ### Breaking
@@ -14,7 +18,7 @@
 
 ### Changed
 
-- Upgrade development Node ans dependent packages to the latest version ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
+- Upgrade development Node and dependent packages to the latest version ([#45](https://github.com/marp-team/marpit-svg-polyfill/pull/45))
 
 ## v1.7.1 - 2021-02-07
 
@@ -24,7 +28,7 @@
 
 ### Changed
 
-- Upgrade development Node LTS ans dependent packages to the latest version ([#34](https://github.com/marp-team/marpit-svg-polyfill/pull/34))
+- Upgrade development Node LTS and dependent packages to the latest version ([#34](https://github.com/marp-team/marpit-svg-polyfill/pull/34))
 - Rename `master` branch to `main` ([#35](https://github.com/marp-team/marpit-svg-polyfill/pull/35))
 
 ## v1.7.0 - 2020-08-18
@@ -60,7 +64,7 @@
 
 ### Changed
 
-- Upgrade development Node LTS ans dependent packages to the latest version ([#22](https://github.com/marp-team/marpit-svg-polyfill/pull/22))
+- Upgrade development Node LTS and dependent packages to the latest version ([#22](https://github.com/marp-team/marpit-svg-polyfill/pull/22))
 - Test against Node 14 ([#23](https://github.com/marp-team/marpit-svg-polyfill/pull/23))
 
 ## v1.3.0 - 2020-06-07
