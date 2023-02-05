@@ -40,7 +40,7 @@ But unfortunately, WebKit browser has not scaled the wrapped HTML correctly. It 
 
 ![](https://raw.githubusercontent.com/marp-team/marpit-svg-polyfill/main/docs/webkit-bug.png)
 
-> **Info**
+> **Note**
 > A brand-new SVG engine for WebKit called as [**"Layer-based SVG engine (LBSE)"**](https://blogs.igalia.com/nzimmermann/posts/2021-10-29-layer-based-svg-engine/) is currently under development, and it will finally bring glitch-free scaling without JS. (See also: [Status of the new SVG engine in WebKit](https://wpewebkit.org/blog/05-new-svg-engine.html))
 >
 > You can test LBSE in [Safari Technology Preview](https://developer.apple.com/safari/technology-preview/) by following these steps:
