@@ -3,11 +3,13 @@ import json from '@rollup/plugin-json'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
-import { main, module as moduleFile, dependencies } from './package.json'
+import packageJson from './package.json' assert { type: 'json' }
+
+const { main, module: moduleFile, dependencies = {} } = packageJson
 
 const plugins = [
   json({ preferConst: true }),
-  nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'] }),
+  nodeResolve(),
   commonjs(),
   typescript({ resolveJsonModule: false }),
   !process.env.ROLLUP_WATCH && terser(),
@@ -16,7 +18,7 @@ const plugins = [
 export default [
   {
     plugins,
-    external: Object.keys(dependencies || {}),
+    external: Object.keys(dependencies),
     input: `src/entry.ts`,
     output: { file: main, format: 'cjs', exports: 'named' },
   },
