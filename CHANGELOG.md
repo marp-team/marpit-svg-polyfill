@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v2.1.0 - 2023-02-10
+
 ### Added
 
 - Feature detection for WebKit ([#50](https://github.com/marp-team/marpit-svg-polyfill/pull/50))
