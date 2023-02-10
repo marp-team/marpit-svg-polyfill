@@ -2,8 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Feature detection for WebKit ([#50](https://github.com/marp-team/marpit-svg-polyfill/pull/50))
+  - A WebKit polyfill will not apply if enabled [Layer-based SVG engine](https://blogs.igalia.com/nzimmermann/posts/2021-10-29-layer-based-svg-engine/)
+
 ### Changed
 
+- The `polyfills()` function now returns a [thenable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) array, for getting the correct result of feature detection when calling together with `await` expression ([#50](https://github.com/marp-team/marpit-svg-polyfill/pull/50))
 - Upgrade development Node and dependent packages to the latest version ([#51](https://github.com/marp-team/marpit-svg-polyfill/pull/51))
 
 ## v2.0.0 - 2022-04-12
